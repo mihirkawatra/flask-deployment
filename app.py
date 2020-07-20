@@ -16,7 +16,7 @@ STATIC_FOLDER = 'static'
 UPLOAD_FOLDER = STATIC_FOLDER + '/uploads'
 
 print('[INFO] : Model loading ................')
-model = load_model(MODEL_DIR + '/cat_dog_classifier.h5')
+model = load_model(MODEL_DIR + 'cat_dog_classifier.h5')
 graph = tf.get_default_graph()
 salary_model = pickle.load(open(MODEL_DIR+'salary_model.pkl', 'rb'))
 spam_model = pickle.load(open(MODEL_DIR+'spam_model.pkl', 'rb'))
