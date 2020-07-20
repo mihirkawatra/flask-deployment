@@ -8,18 +8,10 @@
 
 	<header>
 		<div class="container">
-		<div id="brandname">
-			ML App
-		</div>
 		<h2>Spam Detector For SMS Messages</h2>
-		
-	</div>
+		</div>
 	</header>
-	<p style="color:blue;font-size:20;text-align: center;"><b>Results for Comment</b></p>
 	<div class="results">
-
-
-		
 	{% if prediction == 1%}
 	<h2 style="color:red;">Spam</h2>
 	{% elif prediction == 0%}
@@ -29,6 +21,6 @@
 	{% endif %}
 
 	</div>
-
+	<a href="/">Back to Home</a>
 </body>
 </html>

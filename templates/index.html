@@ -2,34 +2,31 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <title>ML API</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-
+	<title>Home</title>
+	<!-- <link rel="stylesheet" type="text/css" href="../static/css/styles.css"> -->
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
-  <div class="login">
-    <h1>Predict Salary Analysis</h1>
 
-    <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}" method="post">
-      <input type="text" name="experience" placeholder="Experience" required="required" />
-      <input type="text" name="test_score" placeholder="Test Score" required="required" />
-      <input type="text" name="interview_score" placeholder="Interview Score" required="required" />
+	<header>
+		<div class="container">
+			<div id="brandname">
+				Machine Learning App with Flask
+			</div>
+			<h2>Endpoints:</h2>
 
-      <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
-    </form>
+		</div>
+	</header>
 
-    <br>
-    <br>
-    {{ prediction_text }}
-
-  </div>
-
+	<div class="ml-container">
+		<ol>
+        <li><a href="{{ url_for('predict_salary')}}">Salary Predicion</a></li>
+        <li><a href="{{ url_for('predict_email')}}">Email Spam Classifier</a></li>
+        <li><a href="{{ url_for('predict_sentiment')}}">Movie Review Sentiment Prediction</a></li>
+        <li><a href="{{ url_for('upload_file')}}">Dog/Cat Classification</a></li>
+		</ol>
+	</div>
 
 </body>
 
