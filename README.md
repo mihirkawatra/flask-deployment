@@ -13,6 +13,9 @@
       *OR*
  - `flask run`
 
-## Build with Docker
- - docker build -t flask-deployment:latest .
- - docker run -p 5000:5000 flask-deployment
+## Build from Dockerfile
+ - `docker build -t flask-deployment:latest .`
+ - `docker run -p 5000:5000 flask-deployment`
+ 
+ ## Build from Dockerhub
+ - `docker run -p 5000:5000 mihirkawatra/flask-deployment`
