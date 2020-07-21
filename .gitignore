@@ -4,7 +4,11 @@ venv/
 __pycache__/
 
 instance/
-uploads/
+
+*.jpg
+*.jpeg
+*.png
+
 .pytest_cache/
 .coverage
 htmlcov/
