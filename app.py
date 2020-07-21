@@ -1,11 +1,14 @@
 import numpy as np
 from flask import Flask, request, jsonify, render_template, send_from_directory
+import urllib.request
 import pickle
 from keras_preprocessing import image
 from keras.models import load_model
+from keras.utils.data_utils import get_file
 import numpy as np
 import tensorflow as tf
 import os
+import re
 
 app = Flask(__name__)
 
@@ -21,8 +24,8 @@ graph = tf.get_default_graph()
 salary_model = pickle.load(open(MODEL_DIR+'salary_model.pkl', 'rb'))
 spam_model = pickle.load(open(MODEL_DIR+'spam_model.pkl', 'rb'))
 spam_cv = pickle.load(open(MODEL_DIR+'spam_transform.pkl', 'rb'))
-sentiment_cv = pickle.load(open(MODEL_DIR+'sentiment_transform.pkl', 'rb'))
-sentiment_model = pickle.load(open(MODEL_DIR+'sentiment_model.pkl', 'rb'))
+sentiment_pipeline = pickle.load(open(MODEL_DIR+'sentiment_pipeline.pkl', 'rb'))
+iris_model = pickle.load(open(MODEL_DIR+'xgboost_iris.pkl', 'rb'))
 print('[INFO] : Models loaded')
 
 @app.route('/')
@@ -55,6 +58,28 @@ def predict_salary():
     else:
         return render_template('salary.html')
 
+@app.route('/iris', methods=['GET', 'POST'])
+def predict_iris():
+    '''
+    For rendering results on HTML GUI
+    '''
+    if request.method == 'POST':
+        print(request.form)
+        format = request.args.get('format')
+
+        int_features = list(map(float, [request.form['sepal length'], request.form['sepal width'], request.form['petal length'], request.form['petal width']]))
+        final_features = np.array(int_features).reshape(1, -1)
+        prediction = iris_model.predict(final_features)
+
+        output = round(prediction[0], 2)
+        target_names = ['Setosa', 'Versicolor', 'Virginica']
+        if(format == 'json'):
+            return jsonify({'iris': target_names[output]})
+
+        return render_template('iris.html', prediction_text='Prediction: Iris {}'.format(target_names[output]))
+    else:
+        return render_template('iris.html')
+
 @app.route('/email', methods=['POST'])
 def predict_email():
     format = request.args.get('format')
@@ -75,9 +100,10 @@ def predict_sentiment():
     format = request.args.get('format')
     if request.method == 'POST':
         message = request.form['message']
+        TAG_RE = re.compile(r'<[^>]+>')
+        TAG_RE.sub('', message)
         data = [message]
-        vect = sentiment_cv.transform(data).toarray()
-        my_prediction = sentiment_model.predict(vect)
+        my_prediction = sentiment_pipeline.predict(data)
         if(format == 'json'):
             pred = 'Positive' if my_prediction == 1 else 'Negative'
             return jsonify({'prediction': pred})
